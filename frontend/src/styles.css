@@ -1,26 +1,42 @@
-/* Modern sleek theme */
+/* Formal light theme - clean, highly readable */
 :root {
-  --bg: #0f1724;
-  /* deep navy */
-  --surface: #0b1220;
-  --muted: #9aa4b2;
-  --accent: #7c5cff;
-  /* violet */
-  --accent-2: #34d399;
-  /* teal */
-  --danger: #ff6b6b;
-  --glass: rgba(255, 255, 255, 0.04);
-  --radius: 12px;
-  --soft-shadow: 0 8px 24px rgba(2, 6, 23, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.03);
+  --page-bg: #f5f7fb;
+  /* soft neutral background */
+  --surface: #ffffff;
+  /* card/nav surfaces */
+  --text: #072033;
+  /* dark navy for main text */
+  --muted: #556275;
+  /* secondary text */
+  --accent: #0b2540;
+  /* primary accent (nav/buttons) */
+  --accent-2: #0b66ff;
+  --danger: #c23030;
+  --radius: 10px;
+  --soft-shadow: 0 8px 24px rgba(11, 22, 34, 0.06);
+  --border: rgba(11, 22, 34, 0.06);
 }
 
-/* Use Inter as primary font (loaded in index.html) */
+/* Base layout */
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: linear-gradient(180deg, var(--bg) 0%, #071029 100%);
-  color: #e6eef8;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  /* Use a soft neutral background color by default. If a site-bg.jpg image
+    is provided under frontend/public/images/site-bg.jpg, it will be used
+    as a subtle page background while keeping white surfaces readable. */
+  background: var(--page-bg);
+  /* public path so CRA serves it from frontend/public/images */
+  background-image: url('site-bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -33,24 +49,33 @@ body {
 
 /* Navbar */
 nav {
-  background: rgba(2, 6, 23, 0.75);
-  /* darker translucent bar for contrast */
-  border-radius: 12px;
+  background: var(--surface);
+  border-radius: 8px;
   padding: 10px 18px;
-  box-shadow: var(--soft-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 2px 8px rgba(11, 22, 34, 0.04);
+  border: 1px solid var(--border);
+}
+
+/* Ministry logo sizing */
+.ministry-logo {
+  height: 36px;
+  width: auto;
+  display: inline-block;
+  object-fit: contain;
+  margin-right: 8px;
 }
 
 nav a {
-  color: #ffffff;
+  color: var(--accent);
   font-weight: 600;
 }
 
+/* Readability helpers */
 .muted {
   color: var(--muted);
 }
 
-/* Dashboard layout */
+/* Layout helpers */
 .dashboard-header {
   display: flex;
   align-items: center;
@@ -61,10 +86,10 @@ nav a {
 
 .search {
   padding: 10px 12px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 1px solid var(--glass-border);
-  color: #cbe3ff;
+  border-radius: 8px;
+  background: #f7fafc;
+  border: 1px solid #e6eef8;
+  color: var(--text);
 }
 
 .cards-grid {
@@ -75,13 +100,35 @@ nav a {
 
 /* Card */
 .card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.015));
+  background: var(--surface);
   border-radius: var(--radius);
   padding: 16px;
   box-shadow: var(--soft-shadow);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
+}
+
+/* A subtle overlay so content stays legible over the photo */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  /* lighter overlay so the photo is clearer but white surfaces remain readable */
+  background: rgba(245, 247, 251, 0.18);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure main UI layers sit above overlay */
+.app-shell,
+nav,
+.modal,
+.card,
+.hero,
+main {
+  position: relative;
+  z-index: 1;
 }
 
 .card .card-top {
@@ -93,7 +140,7 @@ nav a {
 
 .card .file-name {
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--text);
 }
 
 .card .score {
@@ -108,13 +155,13 @@ nav a {
 
 .card .card-body {
   flex: 1;
-  color: var(--muted);
+  color: #223245;
   font-size: 14px;
 }
 
 .card .feedback {
   margin-top: 8px;
-  color: #cfdff5;
+  color: #334155;
 }
 
 .card-actions {
@@ -123,24 +170,25 @@ nav a {
   margin-top: 12px;
 }
 
+/* Buttons */
 .btn {
-  background: linear-gradient(90deg, var(--accent), #5a3bff);
+  background: var(--accent);
   color: white;
   border: none;
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(124, 92, 255, 0.14);
+  box-shadow: 0 6px 18px rgba(11, 22, 34, 0.06);
 }
 
 .btn.ghost {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  color: #d9e7ff;
+  border: 1px solid var(--border);
+  color: var(--accent);
 }
 
 .dpr-card.low .score {
-  color: var(--accent-2);
+  color: #0b66ff;
 }
 
 .dpr-card.medium .score {
@@ -162,13 +210,13 @@ nav a {
 select {
   margin-left: 8px;
   padding: 8px 10px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--glass-border);
-  color: #cfe6ff;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e6eef8;
+  color: var(--text);
 }
 
-@media (max-width: 640px) {
+@media (max-width:640px) {
   .app-shell {
     padding: 16px;
   }
@@ -178,7 +226,7 @@ select {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: linear-gradient(rgba(3, 6, 23, 0.65), rgba(3, 6, 23, 0.65));
+  background: rgba(11, 22, 34, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -186,12 +234,12 @@ select {
 }
 
 .modal {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  background: var(--surface);
   padding: 18px;
-  border-radius: 14px;
+  border-radius: 12px;
   width: min(900px, 96%);
   box-shadow: var(--soft-shadow);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--border);
 }
 
 .modal-header {
@@ -214,10 +262,10 @@ select {
 }
 
 .score-item {
-  background: rgba(255, 255, 255, 0.03);
+  background: #f6f9fb;
   padding: 8px 10px;
-  border-radius: 10px;
-  color: #dbeafe;
+  border-radius: 8px;
+  color: var(--text);
 }
 
 .modal-actions {
@@ -231,22 +279,22 @@ select {
   display: block;
   margin-bottom: 8px;
   font-size: 13px;
-  color: #dbeafe;
+  color: var(--text);
 }
 
 .upload-form input,
 .upload-form textarea {
   width: 100%;
   padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  background: transparent;
-  color: #e6f1ff;
+  border-radius: 8px;
+  border: 1px solid #e6eef8;
+  background: #ffffff;
+  color: var(--text);
 }
 
 .upload-form h3 {
   margin-top: 0;
-  color: #e6eef8;
+  color: var(--text);
 }
 
 .meta {
@@ -259,21 +307,44 @@ select {
 .hero {
   padding-top: 48px;
   padding-bottom: 48px;
-  background: linear-gradient(180deg, #ffffff, #f7fbff);
-  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  border-radius: 10px;
   margin-bottom: 28px;
   text-align: center;
-  color: #071029;
-  /* dark heading color */
+  color: var(--text);
 }
 
 .hero h1 {
   letter-spacing: -0.02em;
-  color: #071029;
+  color: var(--text);
   font-weight: 800;
 }
 
 .hero p {
   color: #475569;
   margin-top: 12px;
+}
+
+/* Footer screenshot rules */
+.footer-shot {
+  display: block;
+  margin: 18px auto 0 auto;
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e6eef8;
+}
+
+/* small utilities */
+.list-plain {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chip {
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #f4f7fb;
+  color: var(--text);
+  font-weight: 600;
 }

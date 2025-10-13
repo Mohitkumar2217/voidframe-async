@@ -13,9 +13,21 @@ export default function Home() {
       <Navbar />
       <HeroSection onStart={handleStart} />
 
-      <main className="max-w-5xl mx-auto px-4 py-8">
-        <h2 className="text-xl font-semibold">What this platform does</h2>
-        <p className="mt-2 text-gray-600">This demo prototype extracts text from DPR PDFs, runs NLP checks and a risk predictor, and highlights gaps for decision-makers.</p>
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        <section className="features-grid" style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(220px,1fr))', gap:16}}>
+          <div className="card card-surface">
+            <h3 style={{marginTop:0}}>Automated Extraction</h3>
+            <p className="muted">OCR and structured parsing from PDFs to extract quantities and progress notes.</p>
+          </div>
+          <div className="card card-surface">
+            <h3 style={{marginTop:0}}>NLP Quality Checks</h3>
+            <p className="muted">Language-aware checks highlight inconsistencies, missing items and compliance gaps.</p>
+          </div>
+          <div className="card card-surface">
+            <h3 style={{marginTop:0}}>Risk Scoring</h3>
+            <p className="muted">A predictive model ranks DPRs by risk so teams can triage work.</p>
+          </div>
+        </section>
       </main>
     </div>
   );

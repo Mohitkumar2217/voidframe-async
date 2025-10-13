@@ -6,23 +6,35 @@ import LanguageSelector from './LanguageSelector';
 export default function Navbar() {
   const navigate = useNavigate();
   function handleLogout() {
-    // Placeholder logout handler: clear session and redirect to home.
-    // Integrate with auth (JWT/session) when available.
-    // localStorage.removeItem('authToken');
     navigate('/');
   }
 
   return (
-    <nav className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center gap-6">
-            <Link to="/dashboard" className="text-lg font-semibold">Add & Manage DPR</Link>
-          </div>
-          <div className="flex items-center gap-4">
-            <LanguageSelector />
-            <button onClick={handleLogout} className="px-3 py-2 rounded-md text-sm bg-red-500 text-white">Logout</button>
-          </div>
+    <nav className="site-nav" role="navigation" aria-label="Main navigation">
+      <div className="container nav-row" style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:20}}>
+        <div className="nav-left" style={{display:'flex', alignItems:'center', gap:12}}>
+          {/* Ministry logo (place at frontend/public/images/ministry-logo.png) */}
+          <Link to="/" aria-label="Ministry Home">
+            <img src="..ministry_logo" alt="Ministry logo" className="ministry-logo" />
+          </Link>
+          <Link to="/dashboard" className="nav-link">Dashboard</Link>
+          <Link to="/dpr" className="nav-link">DPRs</Link>
+        </div>
+
+        <div className="nav-center" style={{textAlign:'center'}}>
+          <Link to="/" className="brand" style={{textDecoration:'none', display:'inline-flex', alignItems:'center', gap:12}}>
+            <span className="logo" aria-hidden="true" style={{display:'inline-block', width:44, height:28, background: 'linear-gradient(90deg, var(--accent), var(--accent-2))', borderRadius:6}}></span>
+            <div style={{display:'flex', flexDirection:'column', lineHeight:1}}>
+              <span style={{color:'var(--accent)', fontWeight:700}}>AI-Powered DPR Assessment</span>
+              <small style={{color:'var(--muted)'}}>Quality Review & Risk Prediction</small>
+            </div>
+          </Link>
+        </div>
+
+        <div className="nav-right" style={{display:'flex', alignItems:'center', gap:12}}>
+          <input aria-label="Search" placeholder="Search DPRs" className="search-input" style={{padding:'8px 10px', borderRadius:6, border:'1px solid var(--border)'}} />
+          <LanguageSelector />
+          <button onClick={handleLogout} className="btn btn-ghost" aria-label="Logout">Logout</button>
         </div>
       </div>
     </nav>

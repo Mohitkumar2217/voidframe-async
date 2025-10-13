@@ -1,47 +1,50 @@
-// ML service: orchestrates model prediction and training
-// For a production-grade model we'd call a Python microservice or use TensorFlow.js / ONNX
+// mlService.js
+// ML service: connects Node.js (Express) to Python FastAPI microservice for real model predictions
 
-const { spawn } = require('child_process');
+import axios from "axios";
+import { spawn } from "child_process";
 
-module.exports = {
+const FASTAPI_URL = "http://127.0.0.1:8000/predict";
+
+export const mlService = {
+  /**
+   * Send features to FastAPI ML model and get prediction result
+   * @param {Object} features - Input data (same structure FastAPI expects)
+   * @returns {Object} prediction result from Python
+   */
   async predictRisk(features) {
-    // Prototype decision logic:
-    // - If document is very short -> high risk (missing information)
-    // - If images are missing and wordCount low -> high risk
-    const wc = features.wordCount || 0;
-    const hasImages = features.numFigures && features.numFigures > 0;
-
-    let riskScore = 0.2;
-    if (wc < 400) riskScore += 0.5; // too short
-    if (!hasImages) riskScore += 0.15;
-    if (features.readability && features.readability < 40) riskScore += 0.15;
-
-    // clamp
-    riskScore = Math.min(1, Math.max(0, riskScore));
-
-    // Decision thresholds
-    const decision = riskScore > 0.6 ? 'reject' : riskScore < 0.35 ? 'approve' : 'review';
-
-    // Return structured result including top risk reasons for frontend display
-    const reasons = [];
-    if (wc < 400) reasons.push('Document too short or incomplete');
-    if (!hasImages) reasons.push('No supporting images/figures');
-    if (features.readability && features.readability < 40) reasons.push('Low readability / unclear language');
-
-    return { riskScore, level: riskScore > 0.6 ? 'High' : riskScore > 0.35 ? 'Medium' : 'Low', decision, reasons };
+    try {
+      // Call FastAPI endpoint
+      const response = await axios.post(FASTAPI_URL, features);
+      return response.data; // FastAPI returns JSON like { risk_level: 2 } or similar
+    } catch (err) {
+      console.error("❌ Error calling FastAPI microservice:", err.message);
+      throw new Error("ML prediction failed. Check FastAPI server logs.");
+    }
   },
 
+  /**
+   * Optional: trigger Python model training (if you add /train endpoint later)
+   * Or run local Python script directly
+   */
   async trainModel(datasetPath) {
-    // Example: kick off a Python script to train XGBoost model
     return new Promise((resolve, reject) => {
-      if (!datasetPath) return resolve({ status: 'skipped', message: 'No dataset path provided (demo)' });
-      const py = spawn('python', ['ml/train_xgb.py', datasetPath]);
-      py.stdout.on('data', data => console.log('py:', data.toString()));
-      py.stderr.on('data', data => console.error('py err:', data.toString()));
-      py.on('close', code => {
-        if (code === 0) resolve({ status: 'ok' });
-        else reject(new Error('Training failed'));
+      if (!datasetPath) {
+        return resolve({
+          status: "skipped",
+          message: "No dataset path provided (demo mode)",
+        });
+      }
+
+      const py = spawn("python3", ["ml/train_xgb.py", datasetPath]);
+      py.stdout.on("data", (data) => console.log("📊 Python:", data.toString()));
+      py.stderr.on("data", (data) =>
+        console.error("🐍 Python Error:", data.toString())
+      );
+      py.on("close", (code) => {
+        if (code === 0) resolve({ status: "ok", message: "Training completed" });
+        else reject(new Error("Training failed (non-zero exit code)"));
       });
     });
-  }
+  },
 };

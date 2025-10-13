@@ -1,27 +1,14 @@
-// Simple ML controller that proxies to ML service (which may call Python scripts)
-const mlService = require('../services/mlService');
+import { mlService } from "../services/mlService.js";
 
-module.exports = {
+export const predictController = {
   async predictRisk(req, res) {
     try {
-      const features = req.body;
+      const features = req.body; // the frontend sends input JSON
       const result = await mlService.predictRisk(features);
       res.json(result);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Prediction failed' });
+      console.error("Prediction error:", err);
+      res.status(500).json({ error: "Prediction failed" });
     }
   },
-
-  async trainModel(req, res) {
-    try {
-      // Could accept dataset path or training params
-      const { datasetPath } = req.body;
-      const result = await mlService.trainModel(datasetPath);
-      res.json(result);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Training failed' });
-    }
-  }
 };

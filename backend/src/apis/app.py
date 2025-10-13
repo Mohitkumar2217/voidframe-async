@@ -6,7 +6,7 @@ import pickle
 from datetime import datetime
 
 # Load trained LightGBM pipeline
-with open("../models/predict-pipeline.pkl", "rb") as f:
+with open("/Users/nakulmahajan/Desktop/sih-final2/voidframe-async/backend/src/models/predict-pipeline.pkl", "rb") as f:
     model_pipeline = pickle.load(f)
 
 app = FastAPI(title="DPR LightGBM Classifier API")

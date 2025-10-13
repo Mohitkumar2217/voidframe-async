@@ -5,35 +5,35 @@ const imageService = require('../services/imageService');
 const mlService = require('../services/mlService');
 const { analyzeDPR } = require("../services/genaiService"); 
 
-async function analyzeDPR(text, structuredField) {
-  const wordCount = text.split(/\s+/).length;
-  const complexity = wordCount > 300 ? "Detailed" : "Brief";
+// async function analyzeDPR(text, structuredField) {
+//   const wordCount = text.split(/\s+/).length;
+//   const complexity = wordCount > 300 ? "Detailed" : "Brief";
 
-  // Simulated logic: check for keywords and generate pseudo-analysis
-  const hasBudget = /budget|cost|finance/i.test(text);
-  const hasTimeline = /timeline|duration|month/i.test(text);
-  const hasManpower = /manpower|team|staff/i.test(text);
+//   // Simulated logic: check for keywords and generate pseudo-analysis
+//   const hasBudget = /budget|cost|finance/i.test(text);
+//   const hasTimeline = /timeline|duration|month/i.test(text);
+//   const hasManpower = /manpower|team|staff/i.test(text);
 
-  return {
-    issues: [
-      !hasBudget && "Missing cost or financial details.",
-      !hasTimeline && "Project duration/timeline not defined.",
-      !hasManpower && "Manpower distribution section missing.",
-    ].filter(Boolean),
+//   return {
+//     issues: [
+//       !hasBudget && "Missing cost or financial details.",
+//       !hasTimeline && "Project duration/timeline not defined.",
+//       !hasManpower && "Manpower distribution section missing.",
+//     ].filter(Boolean),
 
-    feasibility_insights: [
-      `DPR length classified as: ${complexity}`,
-      "Technical feasibility appears reasonable based on available details.",
-      "No major structural inconsistencies detected in report.",
-    ],
+//     feasibility_insights: [
+//       `DPR length classified as: ${complexity}`,
+//       "Technical feasibility appears reasonable based on available details.",
+//       "No major structural inconsistencies detected in report.",
+//     ],
 
-    suggestions: [
-      "Add risk assessment and mitigation section.",
-      "Include sustainability or scalability projections.",
-      "Cross-verify cost distribution against industry norms.",
-    ],
-  };
-}
+//     suggestions: [
+//       "Add risk assessment and mitigation section.",
+//       "Include sustainability or scalability projections.",
+//       "Cross-verify cost distribution against industry norms.",
+//     ],
+//   };
+// }
 
 module.exports = {
   async uploadDPR(req, res) {

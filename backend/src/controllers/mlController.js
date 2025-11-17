@@ -1,14 +1,19 @@
-import { mlService } from "../services/mlService.js";
+// backend/src/controllers/mlController.js
 
-export const predictController = {
-  async predictRisk(req, res) {
+exports.predictRisk = async (req, res) => {
     try {
-      const features = req.body; // the frontend sends input JSON
-      const result = await mlService.predictRisk(features);
-      res.json(result);
+        // your logic here
+        res.json({ message: "Prediction done" });
     } catch (err) {
-      console.error("Prediction error:", err);
-      res.status(500).json({ error: "Prediction failed" });
+        res.status(500).json({ error: err.message });
     }
-  },
+};
+
+exports.trainModel = async (req, res) => {
+    try {
+        // your training logic here
+        res.json({ message: "Training started" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
